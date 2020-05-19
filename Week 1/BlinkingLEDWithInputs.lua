@@ -1,4 +1,4 @@
-pinLED1=1
+pinLED1=4
 input={100,2000,300,4000,500}
 length = table.getn(input)
 time=0
