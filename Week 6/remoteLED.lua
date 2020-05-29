@@ -21,7 +21,7 @@ if wifi.sta.status() == wifi.STA_GOTIP then
 
 --TCP, 30s for an inactive client to be disconnected
 --try srv = net.createServer(net.UDP,10)
-srv:listen(3005, function(conn)
+srv:listen(80, function(conn)
 conn:send("Send to all clients who connect to Port 80, hello world! \n")
 conn:on("receive", function(conn, s)
 print(s)
