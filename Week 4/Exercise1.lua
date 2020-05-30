@@ -1,24 +1,10 @@
-buttonPin = 7
-gpio.mode(buttonPin, gpio.INPUT)
-gpio.write(buttonPin, gpio.HIGH)
-pushed = 0
-mytimerPush = tmr.create()
-mytimerRelease = tmr.create()
-
-mytimerPush:register(100, 1, function()
-if gpio.read(buttonPin)==0 and pushed ==0 then
- pushed = 1
- print("Button Push detected")
- 
+pinADC = 0
+--A0 pin
+mytimer:register(500, 1, function() 
+ digitV = adc.read(pinADC)
+ --the maximum for NodeMCU ADC is 1.1v
+ --it is a 10-bit ADC, can represent 0-1023
+ --1023 represent 1.1v or larger
+ print(digitV)
 end
-print(pushed)
-end)
-
-mytimerRelease:register(100, 1, function()
-if gpio.read(buttonPin)==1 and pushed == 1 then
- pushed = 0
-end
-end)
-
-mytimerPush:start()
-mytimerRelease:start()
+mytimer:start()
