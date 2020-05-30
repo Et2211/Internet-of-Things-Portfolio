@@ -52,7 +52,7 @@ if wifi.sta.status() == wifi.STA_GOTIP then
   conn:on("connection",function(conn, s)
 
   
-  cron.schedule("* * * * *", function(e)
+  cron.schedule("* 7 * * *", function(e)
   print("\n Alarm Clock \n It is 07:00!!! \n Get UP! \n")
 
   http.get(urlAPI, nil, function(code, data)
