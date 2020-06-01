@@ -26,16 +26,6 @@ function stampTime()
   tm["hour"], tm["min"], tm["sec"]))
 end
 
-timer:alarm(6000, 1, function()
-sntp.sync(tmsrv,function()
-print("Sync succeeded")
-timer:stop()
-stampTime()
-end,function()
-print("Synchronization failed!")
-end, 1)
-end)
-
 srv = net.createServer(net.TCP,30)
 
 mytimer=tmr.create()
@@ -43,6 +33,14 @@ mytimer:register(500,1,function()
 
 print(wifi.sta.getip())
 if wifi.sta.status() == wifi.STA_GOTIP then
+
+  sntp.sync(tmsrv,function()
+  print("Sync succeeded")
+  timer:stop()
+  stampTime()
+  end,function()
+  print("Synchronization failed!")
+  end, 1)
 
   srv:listen(80, function(conn)
   conn:on("receive", function(conn, s)
