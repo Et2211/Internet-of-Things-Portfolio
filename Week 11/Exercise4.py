@@ -13,7 +13,7 @@ def confusionM(y_true, y_predict, target_names):
     plt.figure(figsize=(6, 4))
     cm = sns.heatmap(df_cm, annot=True, fmt="d")
     cm.yaxis.set_ticklabels(cm.yaxis.get_ticklabels(), rotation=90)
-    cm.xaxis.set_ticklabels(cm.xaxis.get_ticklabels(), rotation=0)
+    cm.xaxis.set_ticklabels(cm.xaxis.get_ticklabels(), rotation=90)
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.show()
