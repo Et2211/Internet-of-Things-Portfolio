@@ -5,47 +5,70 @@ lat = ""
 lon = ""
 --Using the longitude and latitude of Portsmouth to retrieve weather data
 urlAPI = "http://api.openweathermap.org/data/2.5/weather?q=Exeter&appid=" ..keyAPI .. "&main.temp=metric"
-http.get(urlAPI, nil, function(code, data)
- if (code < 0) then
---200 is success code
---for the rest, refer to https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
- print("http request failed")
- else
- print (code)
- print (data)
- data = sjson.decode(data)
- for k,v in pairs(data) do 
-    if type(v) == "table" then
+
+wifi.sta.sethostname("uopNodeMCU")
+wifi.setmode(wifi.STATION)
+station_cfg={}
+station_cfg.ssid="BT-3KA62F"
+station_cfg.pwd="MvfRVvE6gEnvpL"
+station_cfg.save=true
+wifi.sta.config(station_cfg)
+wifi.sta.connect()
+
+
+mytimer = tmr.create()
+mytimer:register(3000, 1, function()
+if wifi.sta.getip()==nil then
+  print("Connecting to AP...\n")
+else
+  http.get(urlAPI, nil, function(code, data)
+  if (code < 0) then
+    --200 is success code
+    --for the rest, refer to https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    print("http request failed")
+  else
+    print (code)
+    print (data)
+    data = sjson.decode(data)
+    for k,v in pairs(data) do
+      if type(v) == "table" then
         print (k)
         print_r(v)
-    else 
+      else
         print(k,v)
+      end
     end
-end
+  end
+  end)
+  mytimer:stop()
+
 end
 end)
+mytimer:start()
+
+
 
 --Function used to print arrays
 --from https://stackoverflow.com/questions/7274380/how-do-i-display-array-elements-in-lua
 function print_r(arr, indentLevel)
-    local str = ""
-    local indentStr = "#"
+  local str = ""
+  local indentStr = "#"
 
-    if(indentLevel == nil) then
-        print(print_r(arr, 0))
-        return
-    end
+  if(indentLevel == nil) then
+    print(print_r(arr, 0))
+    return
+  end
 
-    for i = 0, indentLevel do
-        indentStr = indentStr.."\t"
-    end
+  for i = 0, indentLevel do
+    indentStr = indentStr.."\t"
+  end
 
-    for index,value in pairs(arr) do
-        if type(value) == "table" then
-            str = str..indentStr..index..": \n"..print_r(value, (indentLevel + 1))
-        else 
-            str = str..indentStr..index..": "..value.."\n"
-        end
+  for index,value in pairs(arr) do
+    if type(value) == "table" then
+      str = str..indentStr..index..": \n"..print_r(value, (indentLevel + 1))
+    else
+      str = str..indentStr..index..": "..value.."\n"
     end
-    return str
+  end
+  return str
 end

@@ -15,7 +15,6 @@ temp=""
 humi=""
 urlAPI = "http://api.openweathermap.org/data/2.5/weather?q=Exeter&appid=" ..keyAPI .. "&main.temp=metric"
 
-
 timer=tmr.create()
 
 function stampTime()
